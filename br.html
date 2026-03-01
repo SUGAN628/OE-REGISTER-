@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise</title>
+
+<!-- Stylish Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    overflow:hidden;
+}
+
+/* ---------- PAGE 1 ---------- */
+#page1{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f2f2f2;
+}
+
+.box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    width:320px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#ff4081;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+/* ---------- LOADING ---------- */
+#loading{
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    background:white;
+}
+
+/* ---------- SUCCESS PAGE ---------- */
+#successPage{
+    display:none;
+    height:100vh;
+    background:white;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    color:#ff1493;
+    font-family:'Pristacy', cursive;
+    font-size:48px;
+}
+
+/* ---------- ERROR PAGE ---------- */
+#errorPage{
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    font-size:35px;
+    background:white;
+    color:red;
+    font-weight:bold;
+}
+
+/* ---------- HEARTS ---------- */
+.heart{
+    position:absolute;
+    color:#e60033;
+    animation:floatUp 6s linear forwards;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:translateY(100vh) translateX(0px) rotate(0deg);
+    }
+    25%{
+        transform:translateY(75vh) translateX(-25px) rotate(-15deg);
+    }
+    50%{
+        transform:translateY(50vh) translateX(25px) rotate(15deg);
+    }
+    75%{
+        transform:translateY(25vh) translateX(-20px) rotate(-10deg);
+    }
+    100%{
+        transform:translateY(-10vh) translateX(15px) rotate(10deg);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1">
+    <div class="box">
+        <h3>Register Here</h3>
+
+        <label>Name:</label>
+        <input type="text" id="name">
+
+        <label>Date of Birth (DD/MM/YYYY):</label>
+        <input type="text" id="dob" placeholder="DD/MM/YYYY">
+
+        <button onclick="checkDetails()">Submit</button>
+    </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading">
+    Loading...
+</div>
+
+<!-- SUCCESS -->
+<div id="successPage">
+    
+    <video autoplay controls width="310">
+        <source src="happybirthday.design_14041210_114900948.mp4"type="video/mp4">
+    </video>
+  
+</div>
+
+<!-- ERROR -->
+<div id="errorPage">
+    Invalid Error
+</div>
+
+<script>
+function checkDetails(){
+
+    let nameInput = document.getElementById("name").value.trim();
+    let dobInput = document.getElementById("dob").value.trim();
+
+    // Normalize name
+    let cleanName = nameInput.toLowerCase()
+                             .replace(/\s+/g,'')
+                             .replace(/\./g,'');
+
+    // Allowed exact variations after cleaning
+    let validNames = [
+        "thenmozhik",
+        "theanmozhi",
+        "kthenmozhi",
+        "thenmozhi",
+        "theanmozhi"
+    ];
+
+    let isValid = validNames.includes(cleanName) && dobInput === "09/03/2007";
+
+    // Hide form
+    document.getElementById("page1").style.display="none";
+    document.getElementById("loading").style.display="flex";
+
+    setTimeout(()=>{
+
+        document.getElementById("loading").style.display="none";
+
+        if(isValid){
+            document.getElementById("successPage").style.display="flex";
+            document.getElementById("birthdayText").innerHTML =
+                " Happy Birthday " + nameInput + " 💗";
+            startHearts();
+        } else {
+            document.getElementById("errorPage").style.display="flex";
+        }
+
+    },1000);
+}
+
+function startHearts(){
+    setInterval(()=>{
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="💖";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*30+25)+"px";
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },6000);
+
+    },250);
+}
+</script>
+
+</body>
+</html>
